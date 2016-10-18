@@ -1,4 +1,4 @@
-# PowerCurrentGraph  
+# PowerCurrentGraph
 # filename: PowerCurrentGraph.py
 # Version 1.3 09/12/13
 # Version 1.4 03/30/15
@@ -34,23 +34,23 @@ except ImportError:
 def  PowerCurrentGraph(source,days,delay):
 
 
-	
+
 	print("PowerCurrentGraph source:%s days:%s delay:%i" % (source,days,delay))
 	print("sleeping :",delay)
 	time.sleep(delay)
 	print("PowerCurrentGraph running now")
-	
+
         # blink GPIO LED when it's run
         GPIO.setup(18, GPIO.OUT)
         GPIO.output(18, True)
         time.sleep(0.2)
         GPIO.output(18, False)
 
-	# now we have get the data, stuff it in the graph 
+	# now we have get the data, stuff it in the graph
 
 	try:
 		print("trying database")
-    		db = mdb.connect('localhost', 'root', config.MySQL_Password, 'GroveWeatherPi');
+    		db = mdb.connect('localhost', config.MySQL_Username, config.MySQL_Password, config.MySQL_Database);
 
     		cursor = db.cursor()
 
@@ -63,7 +63,7 @@ def  PowerCurrentGraph(source,days,delay):
 		u = []
 		v = []
 		#x = []
-		
+
 		for record in result:
   			t.append(record[0])
   			s.append(record[1])
@@ -112,18 +112,18 @@ def  PowerCurrentGraph(source,days,delay):
 
 		pyplot.show()
 		try:
-			pyplot.savefig("/home/pi/RasPiConnectServer/static/PowerCurrentGraph.png",facecolor=fig.get_facecolor())	
+			pyplot.savefig("/home/pi/RasPiConnectServer/static/PowerCurrentGraph.png",facecolor=fig.get_facecolor())
 		except:
-			pyplot.savefig("/home/pi/SDL_Pi_GroveWeatherPi/static/PowerCurrentGraph.png",facecolor=fig.get_facecolor())	
+			pyplot.savefig("/home/pi/SDL_Pi_GroveWeatherPi/static/PowerCurrentGraph.png",facecolor=fig.get_facecolor())
 
 
 	except mdb.Error, e:
-  
-    		print "Error %d: %s" % (e.args[0],e.args[1])
-    
-	finally:    
 
-		cursor.close()       	 
+    		print "Error %d: %s" % (e.args[0],e.args[1])
+
+	finally:
+
+		cursor.close()
         	db.close()
 
 		del cursor

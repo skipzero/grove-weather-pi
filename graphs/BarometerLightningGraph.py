@@ -1,8 +1,8 @@
-# BarometerLightningGraph 
+# BarometerLightningGraph
 # filename: BarometerLightningGraph.py
-# Version 1.1 03/30/15 
+# Version 1.1 03/30/15
 #
-# contains graphing code 
+# contains graphing code
 #
 #
 
@@ -34,7 +34,7 @@ except ImportError:
 def  BarometerLightningGraph(source,days,delay):
 
 
-	
+
 	print("BarometerLightningGraph source:%s days:%s" % (source,days))
 	print("sleeping seconds:", delay)
 	time.sleep(delay)
@@ -45,13 +45,13 @@ def  BarometerLightningGraph(source,days,delay):
         GPIO.output(18, True)
         time.sleep(0.2)
         GPIO.output(18, False)
-	
 
-	# now we have get the data, stuff it in the graph 
+
+	# now we have get the data, stuff it in the graph
 
 	try:
 		print("trying database")
-    		db = mdb.connect('localhost', 'root', config.MySQL_Password, 'GroveWeatherPi');
+    		db = mdb.connect('localhost', config.MySQL_Username, config.MySQL_Password, config.MySQL_Database);
 
     		cursor = db.cursor()
 
@@ -59,7 +59,7 @@ def  BarometerLightningGraph(source,days,delay):
 		print "query=", query
 		cursor.execute(query)
 		result = cursor.fetchall()
-		
+
 		t = []
 		s = []
 		u = []
@@ -70,23 +70,23 @@ def  BarometerLightningGraph(source,days,delay):
   			s.append(record[1])
   			u.append(record[2])
   			v.append(record[3])
-		
-		
+
+
 		fig = pyplot.figure()
 
                 print ("count of t=",len(t))
 		if (len(t) == 0):
-			return	
+			return
 		#dts = map(datetime.datetime.fromtimestamp, s)
 		#fds = dates.date2num(t) # converted
 		# matplotlib date format object
 		hfmt = dates.DateFormatter('%m/%d-%H')
 
-		
+
 		ax = fig.add_subplot(111)
 		for i in range(len(s)):
 			s[i] = s[i] * 10
-		
+
                 #ax.vlines(fds, -200.0, 1000.0,colors='w')
                 ax.xaxis.set_major_locator(dates.HourLocator(interval=6))
 		ax.xaxis.set_major_formatter(hfmt)
@@ -107,7 +107,7 @@ def  BarometerLightningGraph(source,days,delay):
 			v[i] = v[i] * 10
 		for i in range(len(u)):
 			u[i] = u[i] * 10
-		
+
 
 		pylab.plot(t, u, color='y',label="as3935 Last Interrupt",linestyle="-",marker=".")
 		pylab.plot(t, v, color='r',label="as3935 Last Distance",linestyle="-",marker=".")
@@ -121,18 +121,18 @@ def  BarometerLightningGraph(source,days,delay):
 		ax.xaxis.set_major_formatter(dates.DateFormatter('%m/%d-%H'))
 		pyplot.show()
 		try:
-			pyplot.savefig("/home/pi/RasPiConnectServer/static/BarometerLightningGraph.png")	
+			pyplot.savefig("/home/pi/RasPiConnectServer/static/BarometerLightningGraph.png")
 		except:
-			pyplot.savefig("/home/pi/SDL_Pi_GroveWeatherPi/static/BarometerLightningGraph.png")	
+			pyplot.savefig("/home/pi/SDL_Pi_GroveWeatherPi/static/BarometerLightningGraph.png")
 
-		
+
 	except mdb.Error, e:
-  
-    		print "Error %d: %s" % (e.args[0],e.args[1])
-    
-	finally:    
 
-		cursor.close()       	 
+    		print "Error %d: %s" % (e.args[0],e.args[1])
+
+	finally:
+
+		cursor.close()
         	db.close()
 
 		del cursor
@@ -141,6 +141,6 @@ def  BarometerLightningGraph(source,days,delay):
 		fig.clf()
 		pyplot.close()
 		pylab.close()
-		del t, s, u, v 
+		del t, s, u, v
 		gc.collect()
 		print("BarometerLightningGraph finished now")

@@ -1,7 +1,7 @@
 #
 #
 # GroveWeatherPi Solar Powered Weather Station
-# Version 2.3 October 3, 2016 
+# Version 2.3 October 3, 2016
 #
 # SwitchDoc Labs
 # www.switchdoc.com
@@ -13,13 +13,13 @@
 import sys
 import time
 from datetime import datetime
-import random 
+import random
 import re
 import math
 import os
 
-import sendemail
-import pclogging
+# import sendemail
+# import pclogging
 
 
 sys.path.append('./SDL_Pi_SSD1306')
@@ -113,7 +113,7 @@ def returnStatusLine(device, state):
 
 
 ################
-# TCA9545 I2C Mux 
+# TCA9545 I2C Mux
 
 #/*=========================================================================
 #    I2C ADDRESS/BITS
@@ -127,10 +127,10 @@ TCA9545_ADDRESS =                         (0x73)    # 1110011 (A0+A1=VDD)
 TCA9545_REG_CONFIG            =          (0x00)
 #    /*---------------------------------------------------------------------*/
 
-TCA9545_CONFIG_BUS0  =                (0x01)  # 1 = enable, 0 = disable 
-TCA9545_CONFIG_BUS1  =                (0x02)  # 1 = enable, 0 = disable 
-TCA9545_CONFIG_BUS2  =                (0x04)  # 1 = enable, 0 = disable 
-TCA9545_CONFIG_BUS3  =                (0x08)  # 1 = enable, 0 = disable 
+TCA9545_CONFIG_BUS0  =                (0x01)  # 1 = enable, 0 = disable
+TCA9545_CONFIG_BUS1  =                (0x02)  # 1 = enable, 0 = disable
+TCA9545_CONFIG_BUS2  =                (0x04)  # 1 = enable, 0 = disable
+TCA9545_CONFIG_BUS3  =                (0x08)  # 1 = enable, 0 = disable
 
 #/*=========================================================================*/
 
@@ -144,7 +144,7 @@ try:
 	config.TCA9545_I2CMux_Present = True
 except:
 	print ">>>>>>>>>>>>>>>>>>><<<<<<<<<<<"
-	print "TCA9545 I2C Mux Not Present" 
+	print "TCA9545 I2C Mux Not Present"
 	print ">>>>>>>>>>>>>>>>>>><<<<<<<<<<<"
 	config.TCA9545_I2CMux_Present = False
 
@@ -244,7 +244,7 @@ ds3231 = SDL_DS3231.SDL_DS3231(1, 0x68)
 
 try:
 
-        
+
         ds3231.write_now()
         ds3231.read_datetime()
         #print "DS3231=\t\t%s" % ds3231.read_datetime()
@@ -273,7 +273,7 @@ except IOError as e:
 
 ################
 
-# BMP280 Setup 
+# BMP280 Setup
 
 try:
         bmp280 = BMP280.BMP280()
@@ -358,7 +358,7 @@ def process_as3935_interrupt():
     reason = as3935.get_interrupt()
 
     as3935LastInterrupt = reason
-    
+
     if reason == 0x00:
 	as3935LastStatus = "Spurious Interrupt"
     elif reason == 0x01:
@@ -374,7 +374,7 @@ def process_as3935_interrupt():
 	as3935LastStatus = "Lightning Detected "  + str(distance) + "km away. (%s)" % now
 	pclogging.log(pclogging.INFO, __name__, "Lightning Detected "  + str(distance) + "km away. (%s)" % now)
 	sendemail.sendEmail("test", "GroveWeatherPi Lightning Detected\n", as3935LastStatus, config.textnotifyAddress,  config.textfromAddress, "");
-    
+
     print "Last Interrupt = 0x%x:  %s" % (as3935LastInterrupt, as3935LastStatus)
     if (config.TCA9545_I2CMux_Present):
          tca9545.write_control_register(TCA9545_CONFIG_BUS0)
@@ -392,7 +392,7 @@ def handle_as3935_interrupt(channel):
 
 
 # define Interrupt Pin for AS3935
-as3935pin = 13 
+as3935pin = 13
 
 GPIO.setup(as3935pin, GPIO.IN)
 #GPIO.setup(as3935pin, GPIO.IN,pull_up_down=GPIO.PUD_UP)
@@ -413,7 +413,7 @@ try:
         from tentacle_pi.AM2315 import AM2315
         try:
 		am2315 = AM2315(0x5c,"/dev/i2c-1")
-    		outsideTemperature, outsideHumidity, crc_check = am2315.sense() 
+    		outsideTemperature, outsideHumidity, crc_check = am2315.sense()
 		#print "outsideTemperature: %0.1f C" % outsideTemperature
     		#print "outsideHumidity: %0.1f %%" % outsideHumidity
     		#print "crc: %i" % crc_check
@@ -432,7 +432,7 @@ except:
 
 ###############
 
-# Set up FRAM 
+# Set up FRAM
 # Set up FRAM
 
 # turn I2CBus 0 on
@@ -501,9 +501,9 @@ def processCommand():
 	    	writeSunAirPlusStats()
 		doAllGraphs.doAllGraphs()
 		return True
-			
-			
-			
+
+
+
 	completeCommand()
 
 
@@ -516,11 +516,11 @@ def processCommand():
 def returnPercentLeftInBattery(currentVoltage, maxVolt):
 
 	scaledVolts = currentVoltage / maxVolt
-	
+
 	if (scaledVolts > 1.0):
 		scaledVolts = 1.0
-	
-	
+
+
 	if (scaledVolts > .9686):
 		returnPercent = 10*(1-(1.0-scaledVolts)/(1.0-.9686))+90
 		return returnPercent
@@ -538,7 +538,7 @@ def returnPercentLeftInBattery(currentVoltage, maxVolt):
 		returnPercent = 30*(1-(0.8749-scaledVolts)/(0.9063-0.8749))+20
 		return returnPercent
 
-	
+
 	if (scaledVolts > 0.8437):
 		returnPercent = 17*(1-(0.8437-scaledVolts)/(0.8749-0.8437))+3
 		return returnPercent
@@ -554,7 +554,7 @@ def returnPercentLeftInBattery(currentVoltage, maxVolt):
 		returnPercent = 1*(1-(0.7812-scaledVolts)/(0.7812-0.8126))+1
 		return returnPercent
 
-	return 0	
+	return 0
 
 
 import crcpython2
@@ -576,7 +576,7 @@ def readWXLink(block1, block2):
 			block2_orig = block2
 			print "block2=", block2
                         stringblock1 = ''.join(chr(e) for e in block1)
-                        stringblock2 = ''.join(chr(e) for e in block2[0:27]) 
+                        stringblock2 = ''.join(chr(e) for e in block2[0:27])
 
                 	print "-----------"
                 	print "block 1"
@@ -594,7 +594,7 @@ def readWXLink(block1, block2):
 			block2_orig = block2
 			print "b1, b2=", block1, block2
                         stringblock1 = ''.join(chr(e) for e in block1)
-                        stringblock2 = ''.join(chr(e) for e in block2[0:27]) 
+                        stringblock2 = ''.join(chr(e) for e in block2[0:27])
 
                 	print "-----------"
                 	print "block 1"
@@ -607,7 +607,7 @@ def readWXLink(block1, block2):
 
 		if ((len(block1) > 0) and (len(block2) > 0)):
 			# check crc for errors - don't update data if crc is bad
-		
+
 			#get crc from data
 			receivedCRC = struct.unpack('H', str(block2[29:31]))[0]
 			#swap bytes for recievedCRC
@@ -616,26 +616,26 @@ def readWXLink(block1, block2):
 			print "length of stb1+sb2=", len(stringblock1+stringblock2)
                 	print ''.join('{:02x}'.format(ord(x)) for x in stringblock1)
                 	print ''.join('{:02x}'.format(ord(x)) for x in stringblock2)
-			calculatedCRC = crcCalc.calculate(block1+block2[0:27])	
-			
-			print "calculatedCRC = %x " % calculatedCRC 
+			calculatedCRC = crcCalc.calculate(block1+block2[0:27])
+
+			print "calculatedCRC = %x " % calculatedCRC
 
 
 			if (receivedCRC == calculatedCRC):
 				print "Good CRC Recived"
 
-                		currentWindSpeed = struct.unpack('f', str(block1[9:13]))[0] 
+                		currentWindSpeed = struct.unpack('f', str(block1[9:13]))[0]
 
                 		currentWindGust = 0.0   # not implemented in Solar WXLink version
-	
+
                 		totalRain = struct.unpack('l', str(block1[17:21]))[0]
-	
+
                 		print("Rain Total=\t%0.2f in")%(totalRain/25.4)
                 		print("Wind Speed=\t%0.2f MPH")%(currentWindSpeed/1.6)
-		
+
                 		currentWindDirection = struct.unpack('H', str(block1[7:9]))[0]
                 		print "Wind Direction=\t\t\t %i Degrees" % currentWindDirection
-		
+
                 		# now do the AM2315 Temperature
                 		temperature = struct.unpack('f', str(block1[25:29]))[0]
                 	        print "OTFloat=%x%x%x%x" %(block1[25], block1[26], block1[27], block1[28])
@@ -648,23 +648,23 @@ def readWXLink(block1, block2):
 
 
                 		# now read the SunAirPlus Data from WXLink
-		
+
                 		batteryVoltage = struct.unpack('f', str(block2[1:5]))[0]
                 		batteryCurrent = struct.unpack('f', str(block2[5:9]))[0]
                 		loadCurrent = struct.unpack('f', str(block2[9:13]))[0]
                 		solarPanelVoltage = struct.unpack('f', str(block2[13:17]))[0]
                 		solarPanelCurrent = struct.unpack('f', str(block2[17:21]))[0]
-					
+
                 		auxA = struct.unpack('f', str(block2[21:25]))[0]
-	
-	
+
+
                 		print "WXLink batteryVoltage = %6.2f" % batteryVoltage
                 		print "WXLink batteryCurrent = %6.2f" % batteryCurrent
                 		print "WXLink loadCurrent = %6.2f" % loadCurrent
                 		print "WXLink solarPanelVoltage = %6.2f" % solarPanelVoltage
                 		print "WXLink solarPanelCurrent = %6.2f" % solarPanelCurrent
                 		print "WXLink auxA = %6.2f" % auxA
-	
+
                 		# message ID
                 		MessageID = struct.unpack('l', str(block2[25:29]))[0]
                 		print "WXLink Message ID %i" % MessageID
@@ -680,24 +680,24 @@ def readWXLink(block1, block2):
 
 		else:
 			return []
-	
+
 		# return list
 		returnList = []
-		returnList.append(block1_orig) 
-		returnList.append(block2_orig) 
-		returnList.append(currentWindSpeed) 
-		returnList.append(currentWindGust) 
-		returnList.append(totalRain) 
-		returnList.append(currentWindDirection) 
-		returnList.append(temperature) 
-		returnList.append(humidity) 
-		returnList.append(batteryVoltage) 
-		returnList.append(batteryCurrent) 
-		returnList.append(loadCurrent) 
-		returnList.append(solarPanelVoltage) 
-		returnList.append(solarPanelCurrent) 
-		returnList.append(auxA) 
-		returnList.append(MessageID) 
+		returnList.append(block1_orig)
+		returnList.append(block2_orig)
+		returnList.append(currentWindSpeed)
+		returnList.append(currentWindGust)
+		returnList.append(totalRain)
+		returnList.append(currentWindDirection)
+		returnList.append(temperature)
+		returnList.append(humidity)
+		returnList.append(batteryVoltage)
+		returnList.append(batteryCurrent)
+		returnList.append(loadCurrent)
+		returnList.append(solarPanelVoltage)
+		returnList.append(solarPanelCurrent)
+		returnList.append(auxA)
+		returnList.append(MessageID)
 
 		return returnList
 
@@ -721,7 +721,7 @@ def writeSunAirPlusStats():
 def writeWeatherStats():
 
         f = open("/home/pi/SDL_Pi_GroveWeatherPi/state/WeatherStats.txt", "w")
-	f.write(str(totalRain) + '\n') 
+	f.write(str(totalRain) + '\n')
 	f.write(str(as3935LightningCount) + '\n')
 	f.write(str(as3935LastInterrupt) + '\n')
 	f.write(str(as3935LastDistance) + '\n')
@@ -749,9 +749,9 @@ def sampleWeather():
 
 	global as3935LightningCount
     	global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
- 	global currentWindSpeed, currentWindGust, totalRain 
-  	global 	bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel 
-    	global outsideTemperature, outsideHumidity, crc_check 
+ 	global currentWindSpeed, currentWindGust, totalRain
+  	global 	bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel
+    	global outsideTemperature, outsideHumidity, crc_check
 	global currentWindDirection, currentWindDirectionVoltage
 
 	global HTUtemperature, HTUhumidity, rain60Minutes
@@ -765,7 +765,7 @@ def sampleWeather():
         GPIO.output(SUNAIRLED, False)
 
 	print "----------------- "
-	print " Weather Sampling" 
+	print " Weather Sampling"
 	print "----------------- "
 	#
 	# turn I2CBus 0 on
@@ -783,12 +783,12 @@ def sampleWeather():
 	else:
 		# WXLink Data Gathering
 		returnList = readWXLink(block1, block2)
- 	
-		if (len(returnList) > 0):		
-		
+
+		if (len(returnList) > 0):
+
 			block1 = returnList[0]
 			block2 = returnList[1]
-	
+
 			currentWindSpeed = returnList[2]
   			currentWindGust = 0.0 # not supported
   			totalRain = returnList[4]
@@ -804,28 +804,28 @@ def sampleWeather():
 			if ((len(block1) == 0) or (len(block2) == 0)):
 
 				# skip update if bad
-				currentWindSpeed = 0.0 
+				currentWindSpeed = 0.0
   				currentWindGust = 0.0 # not supported
-  				totalRain = 0.0 
+  				totalRain = 0.0
 				currentWindDirection = 0
 				currentWindDirectionVoltage =  0.0 # not supported
-	
-    				outsideTemperature = 0.0 
+
+    				outsideTemperature = 0.0
     				outsideHumidity =  0.0
 
 			print "Bad data from WXLink, discarded new data.  Kept old"
-		
+
         print "----------------- "
 
 	if (config.SunAirPlus_Present):
-        
+
 		# turn I2CBus 2 on
  		tca9545.write_control_register(TCA9545_CONFIG_BUS2)
 
 		print "----------------- "
 		print "----------------- "
-  
-	if (config.BMP280_Present):	
+
+	if (config.BMP280_Present):
 		bmp180Temperature = bmp280.read_temperature()
 		bmp180Pressure = bmp280.read_pressure()/1000
 		bmp180Altitude = bmp280.read_altitude()
@@ -838,8 +838,8 @@ def sampleWeather():
 		HTU21DFOut = subprocess.check_output(["htu21dflib/htu21dflib","-l"])
 		splitstring = HTU21DFOut.split()
 
-		HTUtemperature = float(splitstring[0])	
-		HTUhumidity = float(splitstring[1])	
+		HTUtemperature = float(splitstring[0])
+		HTUhumidity = float(splitstring[1])
 
 	else:
 		HTUtemperature = 0.0
@@ -847,7 +847,7 @@ def sampleWeather():
 
 	if (as3935LastInterrupt == 0x00):
 		as3935InterruptStatus = "----No Lightning detected---"
-		
+
 	if (as3935LastInterrupt == 0x01):
 		as3935InterruptStatus = "Noise Floor: %s" % as3935LastStatus
 		as3935LastInterrupt = 0x00
@@ -865,7 +865,7 @@ def sampleWeather():
 	if (config.AS3935_Present):
 		as3935InterruptStatus = "No AS3935 Lightning Detector Present"
 		as3935LastInterrupt = 0x00
-		
+
 	if (config.AM2315_Present):
 		# get AM2315 Outside Humidity and Outside Temperature
 		# turn I2CBus 0 on
@@ -874,7 +874,7 @@ def sampleWeather():
 
 
     		outsideTemperature, outsideHumidity, crc_check = am2315.sense()
-		
+
 	if (config.WeatherUnderground_Present == True):
 
 		if (config.WXLink_Present):
@@ -896,9 +896,9 @@ def sampleWeather():
 			print "--WeatherUnderground Data Send Failed"
 
 	else:
-		# set the Data to stale  
+		# set the Data to stale
 		config.WXLink_Data_Fresh = False
-		
+
 
 def sampleSunAirPlus():
 
@@ -907,14 +907,14 @@ def sampleSunAirPlus():
 
 
 	if (config.SunAirPlus_Present):
-		
+
 		# turn I2CBus 2 on
  		if (config.TCA9545_I2CMux_Present):
         		 tca9545.write_control_register(TCA9545_CONFIG_BUS2)
 
 
 		print "----------------- "
-		print " SunAirPlus Sampling" 
+		print " SunAirPlus Sampling"
 		print "----------------- "
 		#
         	# blink GPIO LED when it's run
@@ -922,9 +922,9 @@ def sampleSunAirPlus():
         	GPIO.output(SUNAIRLED, True)
         	time.sleep(0.2)
         	GPIO.output(SUNAIRLED, False)
-	
 
-	
+
+
         	busvoltage1 = sunAirPlus.getBusVoltage_V(LIPO_BATTERY_CHANNEL)
         	shuntvoltage1 = sunAirPlus.getShuntVoltage_mV(LIPO_BATTERY_CHANNEL)
         	# minus is to get the "sense" right.   - means the battery is charging, + that it is discharging
@@ -942,19 +942,19 @@ def sampleSunAirPlus():
         	busvoltage3 = sunAirPlus.getBusVoltage_V(OUTPUT_CHANNEL)
         	shuntvoltage3 = sunAirPlus.getShuntVoltage_mV(OUTPUT_CHANNEL)
         	loadCurrent = sunAirPlus.getCurrent_mA(OUTPUT_CHANNEL)
-        	loadVoltage = busvoltage3 
+        	loadVoltage = busvoltage3
 		loadPower = loadVoltage * (loadCurrent/1000)
 
-		batteryCharge = returnPercentLeftInBattery(batteryVoltage, 4.19)	
+		batteryCharge = returnPercentLeftInBattery(batteryVoltage, 4.19)
 
 	else:
-	
+
 		print "----------------- "
-		print " SunAirPlus Not Present" 
+		print " SunAirPlus Not Present"
 		print "----------------- "
 
 def sampleAndDisplay():
-        
+
 	global currentWindSpeed, currentWindGust, totalRain
         global  bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel
         global outsideTemperature, outsideHumidity, crc_check
@@ -965,16 +965,16 @@ def sampleAndDisplay():
 	global totalRain, as3935LightningCount
     	global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
 	global block1, block2
-	
+
 	# turn I2CBus 0 on
  	if (config.TCA9545_I2CMux_Present):
          	 tca9545.write_control_register(TCA9545_CONFIG_BUS0)
-	
+
 	print "----------------- "
 	if (config.WXLink_Present == False):
-		print " Local WeatherRack Weather Sensors Sampling" 
+		print " Local WeatherRack Weather Sensors Sampling"
 	else:
-		print " WXLink Remote WeatherRack Weather Sensors Sampling" 
+		print " WXLink Remote WeatherRack Weather Sensors Sampling"
 	print "----------------- "
 	#
 
@@ -988,19 +988,19 @@ def sampleAndDisplay():
 	else:
 		# WXLink Data Gathering
 		returnList = readWXLink(block1, block2)
-	
-		if (len(returnList) > 0):	
-		
+
+		if (len(returnList) > 0):
+
 			block1 = returnList[0]
 			block2 = returnList[1]
-	
+
 			currentWindSpeed = returnList[2]
   			currentWindGust = 0.0 # not supported
   			totalRain = returnList[4]
 			currentWindDirection = returnList[5]
 			currentWindDirectionVoltage =  0.0 # not supported
-	
-	
+
+
     			outsideTemperature = returnList[6]
     			outsideHumidity = returnList[7]
 		else:
@@ -1009,13 +1009,13 @@ def sampleAndDisplay():
 			if ((len(block1) == 0) or (len(block2) == 0)):
 
 				# skip update if bad
-				currentWindSpeed = 0.0 
+				currentWindSpeed = 0.0
   				currentWindGust = 0.0 # not supported
-  				totalRain = 0.0 
+  				totalRain = 0.0
 				currentWindDirection = 0
 				currentWindDirectionVoltage =  0.0 # not supported
-	
-    				outsideTemperature = 0.0 
+
+    				outsideTemperature = 0.0
     				outsideHumidity =  0.0
 
 			print "Bad data from WXLink, discarded new data.  Kept old"
@@ -1027,8 +1027,8 @@ def sampleAndDisplay():
   	print("Rain Total=\t%0.2f in")%(totalRain/25.4)
   	print("Wind Speed=\t%0.2f MPH")%(currentWindSpeed/1.6)
     	print("MPH wind_gust=\t%0.2f MPH")%(currentWindGust/1.6)
-  	
-	if (config.WXLink_Present == False):	
+
+	if (config.WXLink_Present == False):
         	if (config.ADS1015_Present or config.ADS1115_Present):
 			print "Wind Direction=\t\t\t %0.2f Degrees" % weatherStation.current_wind_direction()
 			print "Wind Direction Voltage=\t\t %0.3f V" % weatherStation.current_wind_direction_voltage()
@@ -1040,7 +1040,7 @@ def sampleAndDisplay():
                 Scroll_SSD1306.addLineOLED(display,  ("Rain Total=\t%0.2f in")%(totalRain/25.4))
                 if (config.ADS1015_Present or config.ADS1115_Present):
                         Scroll_SSD1306.addLineOLED(display,  "Wind Dir=%0.2f Degrees" % weatherStation.current_wind_direction())
-	
+
 	print "----------------- "
         print "----------------- "
         if (config.DS3231_Present == True):
@@ -1124,7 +1124,7 @@ def sampleAndDisplay():
 
 		if (as3935LastInterrupt == 0x00):
 			print "----No Lightning detected---"
-		
+
 		if (as3935LastInterrupt == 0x01):
 			print "Noise Floor: %s" % as3935LastStatus
 			as3935LastInterrupt = 0x00
@@ -1166,7 +1166,7 @@ def sampleAndDisplay():
         print "----------------- "
 
 	if (config.SunAirPlus_Present):
-        
+
 		# turn I2CBus 2 on
  		tca9545.write_control_register(TCA9545_CONFIG_BUS2)
 
@@ -1186,7 +1186,7 @@ def sampleAndDisplay():
         	# minus is to get the "sense" right.   - means the battery is charging, + that it is discharging
         	current_mA1 = sunAirPlus.getCurrent_mA(LIPO_BATTERY_CHANNEL)
 
-        	loadvoltage1 = busvoltage1  + (shuntvoltage1 / 1000)   
+        	loadvoltage1 = busvoltage1  + (shuntvoltage1 / 1000)
 		batteryPower = loadvoltage1 * (current_mA1/1000)
 
         	print "LIPO_Battery Bus Voltage: %3.2f V " % busvoltage1
@@ -1222,7 +1222,7 @@ def sampleAndDisplay():
         	busvoltage3 = sunAirPlus.getBusVoltage_V(OUTPUT_CHANNEL)
         	shuntvoltage3 = sunAirPlus.getShuntVoltage_mV(OUTPUT_CHANNEL)
         	current_mA3 = sunAirPlus.getCurrent_mA(OUTPUT_CHANNEL)
-        	loadvoltage3 = busvoltage3 
+        	loadvoltage3 = busvoltage3
 		loadPower = loadvoltage3 * (current_mA3/1000)
 
         	print "Output Bus Voltage 3:  %3.2f V " % busvoltage3
@@ -1240,9 +1240,9 @@ def sampleAndDisplay():
 def writeWeatherRecord():
 	global as3935LightningCount
     	global as3935, as3935LastInterrupt, as3935LastDistance, as3935LastStatus
- 	global currentWindSpeed, currentWindGust, totalRain 
-  	global 	bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel 
-    	global outsideTemperature, outsideHumidity, crc_check 
+ 	global currentWindSpeed, currentWindGust, totalRain
+  	global 	bmp180Temperature, bmp180Pressure, bmp180Altitude,  bmp180SeaLevel
+    	global outsideTemperature, outsideHumidity, crc_check
 	global currentWindDirection, currentWindDirectionVoltage
 
 	global HTUtemperature, HTUhumidity
@@ -1253,7 +1253,7 @@ def writeWeatherRecord():
 
 	try:
 		print("trying database")
-    		con = mdb.connect('localhost', 'root', config.MySQL_Password, 'GroveWeatherPi');
+    		con = mdb.connect('localhost', config.MySQL_Username, config.MySQL_Password, config.MySQL_Database);
 
     		cur = con.cursor()
 		print "before query"
@@ -1262,17 +1262,17 @@ def writeWeatherRecord():
 		print("query=%s" % query)
 
 		cur.execute(query)
-	
+
 		con.commit()
-		
+
 	except mdb.Error, e:
-  
+
     		print "Error %d: %s" % (e.args[0],e.args[1])
     		con.rollback()
     		#sys.exit(1)
-    
-	finally:    
-       		cur.close() 
+
+	finally:
+       		cur.close()
         	con.close()
 
 		del cur
@@ -1288,27 +1288,27 @@ def writePowerRecord():
 
 	try:
 		print("trying database")
-    		con = mdb.connect('localhost', 'root', config.MySQL_Password, 'GroveWeatherPi');
+    		con = mdb.connect('localhost', config.MySQL_Username, config.MySQL_Password, config.MySQL_Database);
 
     		cur = con.cursor()
 		print "before query"
 
-		query = 'INSERT INTO PowerSystem(TimeStamp, batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) VALUES (UTC_TIMESTAMP (), %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) 
-		
+		query = 'INSERT INTO PowerSystem(TimeStamp, batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) VALUES (UTC_TIMESTAMP (), %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge)
+
 		print("query=%s" % query)
 
 		cur.execute(query)
-	
+
 		con.commit()
-		
+
 	except mdb.Error, e:
-  
+
     		print "Error %d: %s" % (e.args[0],e.args[1])
     		con.rollback()
     		#sys.exit(1)
-    
-	finally:    
-       		cur.close() 
+
+	finally:
+       		cur.close()
         	con.close()
 
 		del cur
@@ -1328,7 +1328,7 @@ def patTheDog():
         GPIO.setup(WATCHDOGTRIGGER, GPIO.IN)
 
 
-	
+
 def shutdownPi(why):
 
    pclogging.log(pclogging.INFO, __name__, "Pi Shutting Down: %s" % why)
@@ -1358,7 +1358,7 @@ def blinkSunAirLED2X(howmany):
 
 
 
-import urllib2 
+import urllib2
 
 
 def checkInternetConnection():
@@ -1395,8 +1395,8 @@ def WLAN_check():
                 # we have a serious problem and need to reboot the Pi to recover the WLAN connection
 		print "logger WLAN Down, Pi is forcing a reboot"
    		pclogging.log(pclogging.ERROR, __name__, "WLAN Down, Pi is forcing a reboot")
-                WLAN_check_flg = 0 
-		
+                WLAN_check_flg = 0
+
 		time.sleep(5)
 		print "time to Reboot Pi from WLAN_check"
 		rebootPi("WLAN Down reboot")
@@ -1414,7 +1414,7 @@ def WLAN_check():
             WLAN_check_flg = 0
 	    print "WLAN is OK"
 
-        else:    
+        else:
 	    # enable_WLAN_Detection is off
             WLAN_check_flg = 0
 	    print "WLAN Detection is OFF"
@@ -1484,24 +1484,24 @@ sendemail.sendEmail("test", "GroveWeatherPi Startup \n", "The GroveWeatherPi Ras
 if (config.SunAirPlus_Present == False):
 
         	batteryCurrent = 0.0
-        	batteryVoltage = 4.00 
+        	batteryVoltage = 4.00
 		batteryPower = batteryVoltage * (batteryCurrent/1000)
 
 
-        	solarCurrent = 0.0 
-        	solarVoltage = 0.0 
+        	solarCurrent = 0.0
+        	solarVoltage = 0.0
 		solarPower = solarVoltage * (solarCurrent/1000)
 
         	loadCurrent = 0.0
-        	loadVoltage = 0.0 
+        	loadVoltage = 0.0
 		loadPower = loadVoltage * (loadCurrent/1000)
 
-		batteryCharge = 0 
+		batteryCharge = 0
 
 
 secondCount = 1
 while True:
-	
+
 	# process Interrupts from Lightning
 
 	if (as3935Interrupt == True):
@@ -1509,7 +1509,7 @@ while True:
 		try:
 			process_as3935_interrupt()
 
-			
+
 		except:
 			print "exception - as3935 I2C did not work"
 
@@ -1519,11 +1519,11 @@ while True:
 	# process commands from RasPiConnect
 	print "---------------------------------------- "
 
-	processCommand()	
+	processCommand()
 
 	if ((secondCount % 10) == 0):
 		# print every 10 seconds
-		sampleAndDisplay()		
+		sampleAndDisplay()
 		patTheDog()      # reset the WatchDog Timer
 		blinkSunAirLED2X(2)
 
@@ -1540,8 +1540,8 @@ while True:
 			writeWeatherRecord()
 			writePowerRecord()
 
-	
-		addRainToArray(totalRain - lastRainReading)	
+
+		addRainToArray(totalRain - lastRainReading)
 		rain60Minutes = totalRainArray()
 		lastRainReading = totalRain
 		print "rain in past 60 minute=",rain60Minutes
@@ -1560,7 +1560,7 @@ while True:
                 sampleSunAirPlus()
 		doAllGraphs.doAllGraphs()
 
-	# every 30 minutes, check wifi connections 
+	# every 30 minutes, check wifi connections
 
 	if ((secondCount % (30*60)) == 0):
 	#if ((secondCount % (30)) == 0):
@@ -1573,14 +1573,13 @@ while True:
 	# every 48 hours, reboot
 	if ((secondCount % (60*60*48)) == 0):
 		# reboot every 48() hours seconds
-		rebootPi("48 hour reboot")		
+		rebootPi("48 hour reboot")
 
 
 	secondCount = secondCount + 1
 	# reset secondCount to prevent overflow forever
 
 	if (secondCount == 1000001):
-		secondCount = 1	
-	
-	time.sleep(1.0)
+		secondCount = 1
 
+	time.sleep(1.0)

@@ -1,4 +1,4 @@
-# TemperatureHumidityGraph 
+# TemperatureHumidityGraph
 # filename:TemperatureHumidityGraph.py
 # Version 1.1 03/30/15
 #
@@ -35,12 +35,12 @@ except ImportError:
 def  TemperatureHumidityGraph(source,days,delay):
 
 
-	
+
 	print("TemperatureHumidityGraph source:%s days:%s" % (source,days))
 	print("sleeping seconds:", delay)
 	time.sleep(delay)
 	print("TemperatureHumidityGraph running now")
-	
+
 
         # blink GPIO LED when it's run
         GPIO.setup(18, GPIO.OUT)
@@ -48,25 +48,25 @@ def  TemperatureHumidityGraph(source,days,delay):
         time.sleep(0.2)
         GPIO.output(18, False)
 
-	# now we have get the data, stuff it in the graph 
+	# now we have get the data, stuff it in the graph
 
 	try:
 		print("trying database")
-    		db = mdb.connect('localhost', 'root', config.MySQL_Password, 'GroveWeatherPi');
+    		db = mdb.connect('localhost', config.MySQL_Username, config.MySQL_Password, config.MySQL_Database);
 
     		cursor = db.cursor()
 
 		query = "SELECT TimeStamp, bmp180Temperature,  outsideTemperature, outsideHumidity, insideHumidity FROM WeatherData where  now() - interval %i hour < TimeStamp" % (days*24)
 
-		print "query=", query		
+		print "query=", query
 		cursor.execute(query)
 		result = cursor.fetchall()
 
 		t = []
 		u = []
 		v = []
-	        x = []	
-	        z = []	
+	        x = []
+	        z = []
 
 		fig = pyplot.figure()
 
@@ -81,14 +81,14 @@ def  TemperatureHumidityGraph(source,days,delay):
 
                 print ("count of t=",len(t))
 		if (len(t) == 0):
-			return	
+			return
 
 		#dts = map(datetime.datetime.fromtimestamp, s)
 		#fds = dates.date2num(dts) # converted
 		# matplotlib date format object
 		hfmt = dates.DateFormatter('%m/%d-%H')
 
-		
+
 		ax = fig.add_subplot(111)
 		ax.xaxis.set_major_locator(dates.HourLocator(interval=6))
 		ax.xaxis.set_major_formatter(hfmt)
@@ -115,18 +115,18 @@ def  TemperatureHumidityGraph(source,days,delay):
 		ax.xaxis.set_major_formatter(dates.DateFormatter('%m/%d-%H'))
 		pyplot.show()
 		try:
-			pyplot.savefig("/home/pi/RasPiConnectServer/static/TemperatureHumidityGraph.png")	
+			pyplot.savefig("/home/pi/RasPiConnectServer/static/TemperatureHumidityGraph.png")
 		except:
-			pyplot.savefig("/home/pi/SDL_Pi_GroveWeatherPi/static/TemperatureHumidityGraph.png")	
+			pyplot.savefig("/home/pi/SDL_Pi_GroveWeatherPi/static/TemperatureHumidityGraph.png")
 
-		
+
 	except mdb.Error, e:
-  
-    		print "Error %d: %s" % (e.args[0],e.args[1])
-    
-	finally:    
 
-		cursor.close()       	 
+    		print "Error %d: %s" % (e.args[0],e.args[1])
+
+	finally:
+
+		cursor.close()
         	db.close()
 
 		del cursor
@@ -135,6 +135,6 @@ def  TemperatureHumidityGraph(source,days,delay):
 		fig.clf()
 		pyplot.close()
 		pylab.close()
-		del t, u, v, x 
+		del t, u, v, x
 		gc.collect()
 		print("TemperatureHumidityGraph finished now")
