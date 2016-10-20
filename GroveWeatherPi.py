@@ -48,8 +48,8 @@ try:
 except ImportError:
 	import config
 
-if (config.enable_MySQL_Logging == True):
-	import MySQLdb as mdb
+# if (config.enable_MySQL_Logging == True):
+	# import MySQLdb as mdb
 
 
 ################
@@ -60,19 +60,19 @@ if (config.enable_MySQL_Logging == True):
 
 as3935_Interrupt_Happened = False;
 # set to true if you are building the Weather Board project with Lightning Sensor
-config.Lightning_Mode = True
+config.Lightning_Mode = False
 
 # set to true if you are building the solar powered version
-config.SolarPower_Mode = True;
+config.SolarPower_Mode = False;
 
 config.TCA9545_I2CMux_Present = False
 config.SunAirPlus_Present = False
 config.AS3935_Present = False
 config.DS3231_Present = False
-config.BMP280_Present = False
-config.FRAM_Present = False
+config.BMP280_Present = True
+config.FRAM_Present = True
 config.HTU21DF_Present = False
-config.AM2315_Present = False
+config.AM2315_Present = True
 config.ADS1015_Present = False
 config.ADS1115_Present = False
 config.OLED_Present = False
@@ -704,7 +704,7 @@ def readWXLink(block1, block2):
 # write SunAirPlus stats out to file
 def writeSunAirPlusStats():
 
-        f = open("/home/pi/SDL_Pi_GroveWeatherPi/state/SunAirPlusStats.txt", "w")
+    f = open("/home/pi/SDL_Pi_GroveWeatherPi/state/SunAirPlusStats.txt", "w")
 	f.write(str(batteryVoltage) + '\n')
 	f.write(str(batteryCurrent ) + '\n')
 	f.write(str(solarVoltage) + '\n')
@@ -720,7 +720,7 @@ def writeSunAirPlusStats():
 # write weather stats out to file
 def writeWeatherStats():
 
-        f = open("/home/pi/SDL_Pi_GroveWeatherPi/state/WeatherStats.txt", "w")
+    f = open("/home/pi/SDL_Pi_GroveWeatherPi/state/WeatherStats.txt", "w")
 	f.write(str(totalRain) + '\n')
 	f.write(str(as3935LightningCount) + '\n')
 	f.write(str(as3935LastInterrupt) + '\n')
