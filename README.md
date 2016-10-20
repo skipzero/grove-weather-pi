@@ -29,7 +29,3 @@ Obviously with these credentials, don't connect port 3306 to the Internet.   Cha
 NOTE:
 
 If you have a WXLink wireless transmitter installed, the software assumes you have connected your AM2315 outdoor temp/humidity sensor to the WXLink.  If you put another AM2315 on your local system, it will use those values instead of the WXLink values
-
-----------
-
-----------
