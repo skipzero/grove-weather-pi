@@ -15,6 +15,7 @@ INFO=20
 DEBUG=10
 NOTSET=0
 
+enable_MySQL_Logging=False
 
 import sys
 import time
@@ -24,7 +25,7 @@ try:
 except ImportError:
         import config
 
-if (config.enable_MySQL_Logging == True):
+if (enable_MySQL_Logging == True):
 	import MySQLdb as mdb
 
 
