@@ -11,7 +11,7 @@
 
 #MySQL Logging and Password Information
 
-enable_MySQL_Logging = True
+enable_MySQL_Logging = False
 MySQL_Database = "pi_weather"
 MySQL_Username = "pi_weather"
 MySQL_Password = "pipi1138"
