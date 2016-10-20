@@ -1,15 +1,5 @@
 # configuration file - contains customization for exact system
 # JCS 11/8/2013
-mailUser = "skip@angerbunny.net"
-mailPassword = "minter73"
-notifyAddress ="skip@zerosquadron.com"
-fromAddress = "weather@angerbunny.net"
-
-# MySQL Logging and Password Information
-enable_MySQL_Logging = False
-MySQL_Database = "pi_weather"
-MySQL_Username = "pi_weather"
-MySQL_Password = "pipi1138"
 
 # modify this IP to enable WLAN operating detection  - search for WLAN_check in GroveWeatherPi.py
 enable_WLAN_Detection = True
@@ -24,8 +14,6 @@ WeatherUnderground_StationKey = "YYYYYYY"
 BMP280_Altitude_Meters = 40.0
 
 # device present global variables
-Lightning_Mode = False
-SolarPower_Mode = False
 
 TCA9545_I2CMux_Present = False
 SunAirPlus_Present = False
