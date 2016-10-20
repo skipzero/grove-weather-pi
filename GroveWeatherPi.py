@@ -1475,8 +1475,8 @@ currentWindDirection = 0
 currentWindDirectionVoltage = 0.0
 rain60Minutes = 0.0
 
-# pclogging.log(pclogging.INFO, __name__, "GroveWeatherPi Startup Version 2.0")
-# sendemail.sendEmail("test", "GroveWeatherPi Startup \n", "The GroveWeatherPi Raspberry Pi has #rebooted.", config.notifyAddress,  config.fromAddress, "");
+pclogging.log(pclogging.INFO, __name__, "GroveWeatherPi Startup Version 2.0")
+sendemail.sendEmail("test", "GroveWeatherPi Startup \n", "The GroveWeatherPi Raspberry Pi has #rebooted.", config.notifyAddress,  config.fromAddress, "");
 
 if (config.SunAirPlus_Present == False):
 

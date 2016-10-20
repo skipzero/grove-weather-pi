@@ -1,16 +1,11 @@
 # configuration file - contains customization for exact system
 # JCS 11/8/2013
+mailUser = "skip@angerbunny.net"
+mailPassword = "minter73"
+notifyAddress ="skip@zerosquadron.com"
+fromAddress = "weather@angerbunny.net"
 
-
-# mailUser = "skip@angerbunny.net"
-# mailPassword = ""
-
-# notifyAddress ="skip@zerosquadron.com"
-
-# fromAddress = "weather@angerbunny.net"
-
-#MySQL Logging and Password Information
-
+# MySQL Logging and Password Information
 enable_MySQL_Logging = False
 MySQL_Database = "pi_weather"
 MySQL_Username = "pi_weather"
@@ -21,7 +16,6 @@ enable_WLAN_Detection = True
 PingableRouterAddress = "10.0.0.1"
 
 # WeatherUnderground Station
-
 WeatherUnderground_Present = False
 WeatherUnderground_StationID = "KWXXXXX"
 WeatherUnderground_StationKey = "YYYYYYY"
