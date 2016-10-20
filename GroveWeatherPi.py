@@ -9,7 +9,6 @@
 #
 
 # imports
-
 import sys
 import time
 from datetime import datetime
@@ -19,7 +18,7 @@ import math
 import os
 
 # import sendemail
-# import pclogging
+import pclogging
 
 
 sys.path.append('./SDL_Pi_SSD1306')
@@ -38,7 +37,6 @@ import subprocess
 import RPi.GPIO as GPIO
 import doAllGraphs
 import smbus
-
 import struct
 
 
@@ -57,8 +55,8 @@ except ImportError:
 ###############
 
 #indicate interrupt has happened from as3936
+as3935_Interrupt_Happened = False
 
-as3935_Interrupt_Happened = False;
 # set to true if you are building the Weather Board project with Lightning Sensor
 config.Lightning_Mode = False
 
@@ -68,7 +66,7 @@ config.SolarPower_Mode = False;
 config.TCA9545_I2CMux_Present = False
 config.SunAirPlus_Present = False
 config.AS3935_Present = False
-config.DS3231_Present = False
+config.DS3231_Present = True
 config.BMP280_Present = True
 config.FRAM_Present = True
 config.HTU21DF_Present = False
