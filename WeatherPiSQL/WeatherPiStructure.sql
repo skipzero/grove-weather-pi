@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS GroveWeatherPi;
-USE GroveWeatherPi;
+CREATE DATABASE IF NOT EXISTS pi_weather;
+USE pi_weather;
 -- phpMyAdmin SQL Dump
 -- version 3.4.11.1deb2+deb7u1
 -- http://www.phpmyadmin.net
