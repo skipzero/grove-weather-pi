@@ -5,6 +5,11 @@
 enable_WLAN_Detection = True
 PingableRouterAddress = "10.0.0.1"
 
+#mysql
+enable_MySQL_Logging = False
+MySQL_Database = ""
+MySQL_Username = ""
+
 # WeatherUnderground Station
 WeatherUnderground_Present = False
 WeatherUnderground_StationID = "KWXXXXX"

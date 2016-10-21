@@ -31,7 +31,6 @@ sys.path.append('./SDL_Pi_FRAM')
 sys.path.append('./RaspberryPi-AS3935/RPi_AS3935')
 sys.path.append('./SDL_Pi_INA3221')
 sys.path.append('./SDL_Pi_TCA9545')
-sys.path.append('./graphs')
 
 import subprocess
 import RPi.GPIO as GPIO
@@ -45,10 +44,6 @@ try:
 	import conflocal as config
 except ImportError:
 	import config
-
-# if (config.enable_MySQL_Logging == True):
-	# import MySQLdb as mdb
-
 
 ################
 # Device Present State Variables
@@ -106,9 +101,6 @@ def returnStatusLine(device, state):
         else:
                 returnString = returnString + ":   \t\tNot Present"
         return returnString
-
-
-
 
 ################
 # TCA9545 I2C Mux
@@ -1474,9 +1466,6 @@ print "----------------------"
 currentWindDirection = 0
 currentWindDirectionVoltage = 0.0
 rain60Minutes = 0.0
-
-pclogging.log(pclogging.INFO, __name__, "GroveWeatherPi Startup Version 2.0")
-sendemail.sendEmail("test", "GroveWeatherPi Startup \n", "The GroveWeatherPi Raspberry Pi has #rebooted.", config.notifyAddress,  config.fromAddress, "");
 
 if (config.SunAirPlus_Present == False):
 
