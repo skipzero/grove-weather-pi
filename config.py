@@ -5,6 +5,11 @@
 enable_WLAN_Detection = True
 PingableRouterAddress = "10.0.0.1"
 
+mailUser = "skip@angerbunny.net"
+mailPassword = "minter73"
+notifyAddress ="skip@zerosquadron.com"
+fromAddress = "weather@angerbunny.net"
+
 #mysql
 enable_MySQL_Logging = False
 MySQL_Database = ""

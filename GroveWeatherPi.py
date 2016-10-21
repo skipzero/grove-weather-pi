@@ -68,7 +68,7 @@ config.HTU21DF_Present = False
 config.AM2315_Present = True
 config.ADS1015_Present = False
 config.ADS1115_Present = False
-config.OLED_Present = False
+config.OLED_Present = TRUE
 config.WXLink_Present = False
 
 
@@ -723,13 +723,13 @@ def writeWeatherStats():
 	f.write(str(bmp180Pressure) + '\n')
 	f.write(str(bmp180Altitude) + '\n')
 	f.write(str(bmp180SeaLevel)  + '\n')
-    	f.write(str(outsideTemperature) + '\n')
+	f.write(str(outsideTemperature) + '\n')
 	f.write(str(outsideHumidity) + '\n')
 	f.write(str(currentWindDirection) + '\n')
 	f.write(str(currentWindDirectionVoltage) + '\n')
 	f.write(str(HTUtemperature) + '\n')
 	f.write(str(HTUhumidity) + '\n')
-        f.close()
+    f.close()
 
 
 
@@ -1272,37 +1272,37 @@ def writeWeatherRecord():
 
 
 
-def writePowerRecord():
-
-	# now we have the data, stuff it in the database
-
-	try:
-		print("trying database")
-    		con = mdb.connect('localhost', config.MySQL_Username, config.MySQL_Password, config.MySQL_Database);
-
-    		cur = con.cursor()
-		print "before query"
-
-		query = 'INSERT INTO PowerSystem(TimeStamp, batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) VALUES (UTC_TIMESTAMP (), %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge)
-
-		print("query=%s" % query)
-
-		cur.execute(query)
-
-		con.commit()
-
-	except mdb.Error, e:
-
-    		print "Error %d: %s" % (e.args[0],e.args[1])
-    		con.rollback()
-    		#sys.exit(1)
-
-	finally:
-       		cur.close()
-        	con.close()
-
-		del cur
-		del con
+# def writePowerRecord():
+#
+# 	# now we have the data, stuff it in the database
+#
+# 	try:
+# 		print("trying database")
+#     		con = mdb.connect('localhost', config.MySQL_Username, config.MySQL_Password, config.MySQL_Database);
+#
+#     		cur = con.cursor()
+# 		print "before query"
+#
+# 		query = 'INSERT INTO PowerSystem(TimeStamp, batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge) VALUES (UTC_TIMESTAMP (), %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f, %.3f)' % (batteryVoltage, batteryCurrent, solarVoltage, solarCurrent, loadVoltage, loadCurrent, batteryPower, solarPower, loadPower, batteryCharge)
+#
+# 		print("query=%s" % query)
+#
+# 		cur.execute(query)
+#
+# 		con.commit()
+#
+# 	except mdb.Error, e:
+#
+#     		print "Error %d: %s" % (e.args[0],e.args[1])
+#     		con.rollback()
+#     		#sys.exit(1)
+#
+# 	finally:
+#        		cur.close()
+#         	con.close()
+#
+# 		del cur
+# 		del con
 
 
 WATCHDOGTRIGGER = 17
