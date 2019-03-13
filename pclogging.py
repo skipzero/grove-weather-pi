@@ -1,10 +1,10 @@
 #
 #
-# logging system from Project Curacao
+# logging system from Project Curacao 
 # filename: pclogger.py
 # Version 1.0 10/04/13
 #
-# contains logging data
+# contains logging data 
 #
 
 
@@ -15,7 +15,6 @@ INFO=20
 DEBUG=10
 NOTSET=0
 
-enable_MySQL_Logging=False
 
 import sys
 import time
@@ -25,14 +24,14 @@ try:
 except ImportError:
         import config
 
-if (enable_MySQL_Logging == True):
+if (config.enable_MySQL_Logging == True):
 	import MySQLdb as mdb
 
 
 def log(level, source, message):
 
 
- if (config.enable_MySQL_Logging == True):
+ if (config.enable_MySQL_Logging == True):	
    LOWESTDEBUG = 0
 	# open mysql database
 
@@ -46,9 +45,9 @@ def log(level, source, message):
 
    if (level >= LOWESTDEBUG):
         try:
-
+	
                 #print("trying database")
-                con = mdb.connect('localhost', config.MySQL_Username, config.MySQL_Password, config.MySQL_Database);
+                con = mdb.connect('localhost', 'root', config.MySQL_Password, 'GroveWeatherPi');
 
                 cur = con.cursor()
                 #print "before query"
@@ -73,3 +72,4 @@ def log(level, source, message):
 
                 del cur
                 del con
+
